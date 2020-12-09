@@ -2,7 +2,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app2/pages/article_like_bar.dart';
 import 'package:flutter_app2/pages/sub_test_stateful_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -89,7 +88,7 @@ class TestState extends State<TestStatefulWidget>{
         SubTestStatefulWidget(),
         Text('当前时间'),
         Text('$curTimeStr'),
-        ArticleLikeBar(likeNum: 20)
+        // ArticleLikeBar(likeNum: 20)
       ],
     );
   }
