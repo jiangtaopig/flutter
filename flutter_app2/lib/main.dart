@@ -1,19 +1,20 @@
+
+import 'dart:convert' as convert;
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app2/DioCreator.dart';
-import 'package:flutter_app2/DioLogInterceptor.dart';
 import 'package:flutter_app2/User.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:flutter_app2/login_res.dart';
+import 'package:flutter_app2/pages/home_page.dart';
+import 'package:flutter_app2/pages/test_stateful_widget.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-
+var color = Colors.red;
 
 class MyApp extends StatelessWidget {
   @override
@@ -24,7 +25,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Zhu')
+          ),
+        body: Center(
+
+            child: HomePage(),
+        ),
+      ) //MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
@@ -59,8 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
       }).whenComplete(() => print("complete !")); // whenCoplete 一定会执行
 
       // getData();
-      postData();
+      // postData();
       // testGet();
+      // testFuture();
+
+      test();
     });
   }
 
@@ -92,18 +104,49 @@ class _MyHomePageState extends State<MyHomePage> {
           , "source":"A", "deviceId":"f60a5f83-395a-4f11-aa52-6ed2a244b1f7", "sms":false});
     print("result : " + response.data.toString());
 
-    testGet();
+    String ss = convert.jsonEncode(response.data);
+    Map<String, dynamic> map = convert.jsonDecode(ss);
+    print("----------------ss = $ss");
+    print("----------------map code = ${map.keys}");
+
+    LoginRes loginRes = LoginRes();
+    loginRes.fromJson(map);
+    print("loginRes >>> ${loginRes.result.name}");
+
+    // testGet();
+    testRequest();
+  }
+
+  void test(){
+    DioCreator dioCreator = DioCreator.instance;
+    dioCreator.request("api/customer/v2/login", parameters:  {"loginName": "13412221222", "encryptPasswd": "ac0oxQRHgloQ936h5WanRTUI8bUoeayc/kGrB9Qti/5zIqlVG2YQA3UO3/fmo5awPEPfvg0AF+1QNwSZRicB8RFMV4xCqf17N8+yRZw8Tw63+5HHyz6W0wPpwqAvLTDXU5Z3mQ7UFovtk/reZrsSKOp+id55qJFVjxp0iBAwSUs="
+      , "source":"A", "deviceId":"f60a5f83-395a-4f11-aa52-6ed2a244b1f7", "sms":false}, method: "POST",  onSuccess: (data){
+      print("data ====== $data");
+
+      String ss = convert.jsonEncode(data);
+      Map<String, dynamic> map = convert.jsonDecode(ss);
+      print("----------------ss = $ss");
+      print("----------------map code = ${map["code"]}");
+
+      LoginRes loginRes = LoginRes();
+      loginRes.fromJson(map);
+      print("loginRes >>> ${loginRes.result.name}");
+
+    }, onError: (err){
+      print("e $err");
+    });
   }
 
   void testGet() async{
     DioCreator dioCreator = DioCreator.instance;
     var dio = dioCreator.getDio();
-    // List<Cookie> cookies = new List();
-    // cookies.add(Cookie("za_ciid", "ATqOSAAAAAAAAcsBaHR0cHM6Ly9pbWFnZS56dWlmdWxpLmNvbS8xNC8yMDE4MTEzMC85NDQzYmExNGRmZDA5OTZlZThkM"
-    //     "2QyYTk4YWE4MmFhMS5qcGcAAf3LFgAAAAAAAIN+HwAAAAAAAQEAAAABZe5rgh8AAAAAAAExMzQxMjIyMTIysgEAamF2YS51dGlsLkRhdOUB6ytKPHYBAAABhO"
-    //     "acseaxn+a2mwH9yxYAAAAAAAAB/csWAAAAAAAAAQIBoSYRAAAAAAABgkEBAAAAAAA="));
-    // cookies.add(Cookie("za_itid", "ZuSERPHLSovGlKZxO8CtBaNS/D4r1a45c3z33paVQTn2U6CIFvO/e+xfrGQtbailiI3gWSM3W9bXmKAZUN3iYw=="));
-    // cookies.add(Cookie("_orgCustId", "ZZz4Z3GkKT6UfiLUiNPOxTku3gq+4Lr5s9AzvdqzghtGSLPvXrCJMiu2ZDHH0Dh8DvmHk3imO4rgY4QzyUf7h5Q=="));
+    // 下面是设置Cookie的方法，
+    List<Cookie> cookies = new List();
+    cookies.add(Cookie("za_ciid", "ATqOSAAAAAAAAcsBaHR0cHM6Ly9pbWFnZS56dWlmdWxpLmNvbS8xNC8yMDE4MTEzMC85NDQzYmExNGRmZDA5OTZlZThkM"
+        "2QyYTk4YWE4MmFhMS5qcGcAAf3LFgAAAAAAAIN+HwAAAAAAAQEAAAABZe5rgh8AAAAAAAExMzQxMjIyMTIysgEAamF2YS51dGlsLkRhdOUB6ytKPHYBAAABhO"
+        "acseaxn+a2mwH9yxYAAAAAAAAB/csWAAAAAAAAAQIBoSYRAAAAAAABgkEBAAAAAAA="));
+    cookies.add(Cookie("za_itid", "ZuSERPHLSovGlKZxO8CtBaNS/D4r1a45c3z33paVQTn2U6CIFvO/e+xfrGQtbailiI3gWSM3W9bXmKAZUN3iYw=="));
+    cookies.add(Cookie("_orgCustId", "ZZz4Z3GkKT6UfiLUiNPOxTku3gq+4Lr5s9AzvdqzghtGSLPvXrCJMiu2ZDHH0Dh8DvmHk3imO4rgY4QzyUf7h5Q=="));
     // dioCreator.setCookies(dio.options.baseUrl, cookies);
 
     Response response = await dio.get("https://t-api.zuifuli.com/api/website/v2/meeting/today");
@@ -111,7 +154,21 @@ class _MyHomePageState extends State<MyHomePage> {
     Future.delayed(new Duration(seconds: 4), (){
       dioCreator.printCookies();
     });
+  }
 
+  void testRequest(){
+    DioCreator dioCreator = DioCreator.instance;
+    dioCreator.request("https://t-api.zuifuli.com/api/website/v2/meeting/today", parameters: {}, method: "GET", onSuccess: (data){
+      print("data ====== $data");
+    }, onError: (err){
+      print("e $err");
+    });
+
+  }
+
+  void testFuture(){
+    User user = User();
+    user.getPersistCookieJar();
   }
 
   @override
@@ -134,6 +191,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',

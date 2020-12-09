@@ -29,6 +29,8 @@ dependencies:
   cookie_jar: ^1.0.0
   # 文件存储
   path_provider: ^0.5.0
+  #### 日期格式化
+  intl: ^0.16.0
 
 
   # The following adds the Cupertino Icons font to your application.
