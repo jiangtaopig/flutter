@@ -29,8 +29,10 @@ class ArticleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      padding: EdgeInsets.all(8),
+      padding: EdgeInsets.all(0),
       child: FlatButton(
+        color: Colors.red,
+        padding: EdgeInsets.all(10),
         onPressed: () => goToArticleDetailPage(context),
         child: Column(
           children: <Widget>[
@@ -38,20 +40,23 @@ class ArticleCard extends StatelessWidget {
                 title: articleInfo.title,
                 summary: articleInfo.summary,
                 articleImage: articleInfo.articleImage),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 5,
-                  child: ArticleBottomBar(
-                      nickname: userInfo.nickName,
-                      headerImage: userInfo.avatarUrl,
-                      commentNum: articleInfo.commentNum),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: ArticleLikeBar(),
-                ),
-              ],
+            Container(
+              color: Colors.amber,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: ArticleBottomBar(
+                        nickname: userInfo.nickName,
+                        headerImage: userInfo.avatarUrl,
+                        commentNum: articleInfo.commentNum),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: ArticleLikeBar(),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

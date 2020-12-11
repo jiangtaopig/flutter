@@ -37,7 +37,9 @@ class ArticleBottomBar extends StatelessWidget {
   /// 帖子栏中的评论信息
   Widget getCommentWidget() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
+        Padding(padding: EdgeInsets.only(right: 10)),
         Icon(Icons.comment, color: Colors.grey, size: 18),
         Padding(padding: EdgeInsets.only(left: 10)),
         Text('$commentNum'),

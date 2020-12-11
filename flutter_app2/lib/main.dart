@@ -7,6 +7,7 @@ import 'package:flutter_app2/User.dart';
 import 'package:flutter_app2/login_res.dart';
 import 'package:flutter_app2/models/like_num_model.dart';
 import 'package:flutter_app2/pages/home_page.dart';
+import 'package:flutter_app2/pages/test_flex.dart';
 import 'package:provider/provider.dart';
 
 void main() {

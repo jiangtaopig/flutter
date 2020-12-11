@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ArticleSummaryWidget extends StatelessWidget {
@@ -18,17 +19,22 @@ class ArticleSummaryWidget extends StatelessWidget {
   /// 左侧的标题和标题描述组件
   Widget getLeftInfo() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[Text(title), Text(summary)],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        getLeftInfo(),
-        Image.network(articleImage, width: 80, height: 80, fit: BoxFit.fill),
-      ],
+    return Container(
+      color: Colors.blueGrey,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          getLeftInfo(),
+          Image.network(articleImage, width: 80, height: 80, fit: BoxFit.fill),
+        ],
+      ),
     );
   }
 }
